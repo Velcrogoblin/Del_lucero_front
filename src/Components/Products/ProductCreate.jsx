@@ -8,7 +8,7 @@ const VITE_URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCTS;
 
 export const ProductCreate = () => {
   const navigate = useNavigate();
-  // const [token, setToken] = useState("");
+  const [token, setToken] = useState("");
   const [product, setProduct] = useState({
     name: "",
     width: 0,
@@ -40,30 +40,29 @@ export const ProductCreate = () => {
 
   const handleSubmit = async (e) => {
     setLoading(true);
-    // if (token.length < 150) {
-    //   alert("Tenes que estar logueado para crear un producto");
-    // } else {
+    if (token.length < 150) {
+      alert("Tenes que estar logueado para crear un producto");
+    } else {
       try {
         const response = await axios.post(VITE_URL_PRODUCTS, {
           ...product,
-         // token: token,
+          token: token,
         });
 
         setLoading(false);
         alert(response.data.message);
 
         handleReset();
-        //navigate("/clients");
       } catch (error) {
         setLoading(false);
         alert(error.response.data.message);
       }
-    //}
+    }
   };
 
-  // useEffect(() => {
-  //   setToken(JSON.parse(window.localStorage.getItem("token")));
-  // }, []);
+  useEffect(() => {
+    setToken(JSON.parse(window.localStorage.getItem("token")));
+  }, []);
 
   return (
     <>
@@ -83,7 +82,6 @@ export const ProductCreate = () => {
                   value={product.name}
                   className={inputs.inputGroupInput}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className={inputs.inputGroup}>
@@ -93,7 +91,6 @@ export const ProductCreate = () => {
                   value={product.width}
                   onChange={handleChange}
                   className={inputs.inputGroupInput}
-                  required
                 />
               </div>
               <div className={inputs.inputGroup}>
@@ -103,7 +100,6 @@ export const ProductCreate = () => {
                   value={product.height}
                   onChange={handleChange}
                   className={inputs.inputGroupInput}
-                  required
                 />
               </div>
               <div className={inputs.inputGroup}>
@@ -113,7 +109,6 @@ export const ProductCreate = () => {
                   value={product.weight}
                   onChange={handleChange}
                   className={inputs.inputGroupInput}
-                  required
                 />
               </div>
               <div className={inputs.inputGroup}>
@@ -123,7 +118,6 @@ export const ProductCreate = () => {
                   value={product.stock}
                   onChange={handleChange}
                   className={inputs.inputGroupInput}
-                  required
                 />
               </div>
               <div className={inputs.inputGroup}>
@@ -133,7 +127,6 @@ export const ProductCreate = () => {
                   value={product.price}
                   onChange={handleChange}
                   className={inputs.inputGroupInput}
-                  required
                 />
               </div>
               <div className={inputs.inputGroup}>
@@ -143,7 +136,6 @@ export const ProductCreate = () => {
                   value={product.img}
                   className={inputs.inputGroupInput}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className={inputs.inputGroup}>
@@ -153,7 +145,6 @@ export const ProductCreate = () => {
                   value={product.duration}
                   className={inputs.inputGroupInput}
                   onChange={handleChange}
-                  required
                 />
               </div>
             </div>

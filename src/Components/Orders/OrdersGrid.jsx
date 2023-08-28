@@ -14,8 +14,6 @@ export const OrdersGrid = () => {
     const ord = axios.get(VITE_URL_ORDERS).then((res) => setOrders(res.data));
   }, []);
 
-  console.log(orders);
-
   return (
     <div className={containers.ordersContainer}>
       <table className={tables.orderTable}>

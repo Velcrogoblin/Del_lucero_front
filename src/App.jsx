@@ -24,7 +24,6 @@ import { Detail } from "./Components/Detail/Detail";
 import { ClientsGrid } from "./Components/Clients/ClientsGrid";
 import { ProductsGrid } from "./Components/Products/ProductsGrid";
 import { OrdersGrid } from "./Components/Orders/OrdersGrid";
-import { ProviderGrid } from "./Components/Providers/ProviderGrid";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -75,8 +74,7 @@ function App() {
 
           <Route path="/providers" element={<Providers />} />
           <Route path="/providers/create" element={<ProviderCreate />} />
-          <Route path="/providers/edit/:id" element={<ProviderEdit />} />
-          <Route path="/providers/grid" element={<ProviderGrid />} />
+          <Route path="/providers/edit" element={<ProviderEdit />} />
 
           <Route path="/catalogue" element={<Catalogue />} />
           <Route path="/detail/:id" element={<Detail />} />

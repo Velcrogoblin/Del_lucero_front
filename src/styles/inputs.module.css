@@ -25,7 +25,6 @@
   font-size: 22px;
   text-indent: 5px;
   transition: outline-color 500ms;
-  outline-color: rgb(131, 66, 131);
 }
 
 .inputGroupInput:is(:focus, :valid) {

@@ -6,8 +6,6 @@ import styles from "./orders.module.css";
 import buttons from "../../styles/buttons.module.css";
 import { Loading } from "../Loading/Loading";
 const VITE_URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
-const VITE_URL_PURCHASES = import.meta.env.VITE_URL_PURCHASES;
-
 const VITE_URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCTS;
 
 export const OrderEdit = () => {
@@ -82,64 +80,8 @@ export const OrderEdit = () => {
     }
   };
 
-  const calcularPrecioTotal = (order, products) => {
-    let precioTotal = 0;
-    for (let i = 0; i < order.products.length; i++) {
-      const productId = order.products[i].product_id;
-      const quantity = order.products[i].quantity;
-      const product = products.find((p) => p.product_id === productId);
-
-      if (product) {
-        precioTotal += product.price * quantity;
-      }
-    }
-    return precioTotal;
-  };
-
   const handleSubmit = async () => {
     setLoading(true);
-
-    if (order.status === "Entregada") {
-      let totalPrice = calcularPrecioTotal(order, products);
-
-      let purchase = {
-        client_id: order.client_id,
-        date: new Date(),
-        products: order.products,
-        total_amount: totalPrice,
-      };
-
-      try {
-        let response = await axios.post(VITE_URL_PURCHASES, {
-          ...purchase,
-          token,
-        });
-        setLoading(false);
-        navigate("/orders/grid");
-        return alert(response.data.message);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-        return alert(error.message);
-      }
-    }
-
-    if (order.status === "Cancelada") {
-      try {
-        let response = await axios.put(`${VITE_URL_ORDERS}delete/`, {
-          order_id: order.order_id,
-          token,
-        });
-        setLoading(false);
-        navigate("/orders/grid");
-        return alert(response.data.message);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-        return alert(error.message);
-      }
-    }
-
     try {
       let response = await axios.put(VITE_URL_ORDERS, {
         ...order,
@@ -147,12 +89,11 @@ export const OrderEdit = () => {
       });
       console.log(response);
       setLoading(false);
-      navigate("/orders/grid");
-      return alert(response.data.message);
+      alert(response.data.message);
     } catch (error) {
       console.log(error);
       setLoading(false);
-      return alert(error.message);
+      alert(error.message);
     }
   };
 
@@ -175,6 +116,8 @@ export const OrderEdit = () => {
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
 
+  console.log(order);
+
   return (
     <>
       {loading ? (
@@ -187,6 +130,7 @@ export const OrderEdit = () => {
               {order.Client && (
                 <input
                   value={order.Client.name}
+                  readOnly
                   className={inputs.inputGroupInput}
                 />
               )}
@@ -322,14 +266,8 @@ export const OrderEdit = () => {
                 <option></option>
                 <option value={"Cancelada"}>Cancelada</option>
                 <option value={"En preparacion"}>En preparación</option>
-                <option value={"En preparación - Pagada"}>
-                  En preparación - Pagada
-                </option>
                 <option value={"Lista para entregar"}>
                   Lista para entregar
-                </option>
-                <option value={"Lista para entregar - Pagada"}>
-                  Lista para entregar - Pagada
                 </option>
                 <option value={"Entregada"}>Entregada</option>
               </select>

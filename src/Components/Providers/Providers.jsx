@@ -14,7 +14,7 @@ export const Providers = () => {
         Nuevo Proveedor
       </div>
       <div
-        onClick={() => navigate("/providers/grid")}
+        onClick={() => navigate("/providers/edit")}
         className={buttons.buttonMenu}
       >
         Editar Proveedor

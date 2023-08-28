@@ -21,9 +21,9 @@ export const ProviderCreate = () => {
 
   const handleChange = (e) => {
     if (e.target.name === "supplies") {
-      setProvider({ ...provider, supplies: [e.target.value] });
+      setProvider({...provider, supplies: [e.target.value] })
     } else {
-      setProvider({ ...provider, [e.target.name]: e.target.value });
+    setProvider({ ...provider, [e.target.name]: e.target.value });
     }
   };
 
