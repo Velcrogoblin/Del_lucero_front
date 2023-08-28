@@ -1,0 +1,32 @@
+.mainTable {
+  width: 380px;
+  border-radius: 15px;
+  border-collapse: collapse;
+  background-color: hsl(169, 54%, 73%);
+  word-wrap: normal;
+}
+
+.orderTable {
+  width: 810px;
+  border-radius: 15px;
+  border-collapse: collapse;
+  background-color: hsl(169, 54%, 73%);
+  margin: 15px;
+}
+
+.tableHeaderItem {
+  border-bottom: 1px solid rgb(131, 66, 131);
+  height: 35px;
+  border-radius: 15px;
+}
+
+.tableItem {
+  height: 45px;
+  border-right: 1px solid rgb(131, 66, 131);
+  border-top: 1px solid rgb(131, 66, 131);
+  text-align: center;
+}
+
+.tableRow {
+  border: none;
+}

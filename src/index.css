@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  /* background-color: hsl(251, 10%, 1%); */
+  /*  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif; */
+  font-size: 22px;
+  font-family: "Handjet", cursive;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

@@ -1,0 +1,17 @@
+.main {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 1.5rem;
+    
+}
+
+.button{
+  padding: 1rem;
+  margin: 0.2rem;
+  font-size:medium;
+  border-radius: 8px;
+  width: 40%;
+
+}

@@ -1,0 +1,53 @@
+.inputGroup {
+  position: relative;
+  margin: 10px;
+}
+
+.inputGroupLabel {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  translate: 10px 10px;
+  color: rgb(131, 66, 131);
+  transition: translate 500ms, scale 500ms;
+  font-size: 20px;
+}
+
+.inputGroupInput {
+  font: inherit;
+  padding-top: 10px;
+  height: 70px;
+  width: 300px;
+  border: none;
+  border-radius: 5px;
+  outline: 2px solid #fff;
+  background-color: white;
+  font-size: 22px;
+  text-indent: 5px;
+  transition: outline-color 500ms;
+  outline-color: rgb(131, 66, 131);
+}
+
+.inputGroupInput:is(:focus, :valid) {
+  outline-color: rgb(131, 66, 131);
+}
+
+.inputGroupInput:focus + .inputGroupLabel,
+.inputGroupInput:valid + .inputGroupLabel {
+  padding-inline: 5px;
+  translate: 10px 0.14px;
+  scale: 0.8;
+  background-color: white;
+}
+
+.inputGroupInputEdit {
+  font: inherit;
+  color: rgb(131, 66, 131);
+  height: 27px;
+  width: 220px;
+  border: none;
+  border-radius: 4px;
+  outline: 2px solid #fff;
+  background-color: white;
+  font-size: 17px;
+}

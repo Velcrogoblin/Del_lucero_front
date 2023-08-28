@@ -1,0 +1,31 @@
+.containerDetail{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.imageDetail{
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 1px 0px 0px 1px hsl(169, 54%, 73%);
+}
+
+.detailVela{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoDetail{
+  margin: 1rem;
+  color:white;
+}
+
+.nameDetail{
+  color: aqua;
+  margin: 1rem;
+}

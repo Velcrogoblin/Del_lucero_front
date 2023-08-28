@@ -1,0 +1,21 @@
+.formMain {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.inputGroup {
+  display: flex;
+  align-items: center;
+  margin: 0.4rem;
+}
+.input {
+  border-radius: 6px;
+  height: 22px;
+  width: 100%;
+}
+
+.label {
+  color: white;
+  margin-right: 10px;
+  font-size: large;
+}
