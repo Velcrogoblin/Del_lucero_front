@@ -12,7 +12,7 @@ export const OrderEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const [order, setOrder] = useState([]);
+  const [order, setOrder] = useState();
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
@@ -83,6 +83,7 @@ export const OrderEdit = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      console.log(order);
       let response = await axios.put(VITE_URL_ORDERS, {
         ...order,
         token,
@@ -90,10 +91,12 @@ export const OrderEdit = () => {
       console.log(response);
       setLoading(false);
       alert(response.data.message);
+      navigate("/orders/grid");
     } catch (error) {
       console.log(error);
       setLoading(false);
       alert(error.message);
+
     }
   };
 
@@ -116,7 +119,7 @@ export const OrderEdit = () => {
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
 
-  console.log(order);
+  
 
   return (
     <>
@@ -127,7 +130,7 @@ export const OrderEdit = () => {
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className={inputs.inputGroup}>
               <label className={inputs.inputGroupLabel}>Cliente: </label>
-              {order.Client && (
+              {order?.Client && (
                 <input
                   value={order.Client.name}
                   readOnly
@@ -249,6 +252,7 @@ export const OrderEdit = () => {
               <select
                 onChange={handleChange}
                 name={"delivery_method"}
+                value={order.delivery_method}
                 className={inputs.inputGroupInput}
               >
                 <option></option>
@@ -261,6 +265,7 @@ export const OrderEdit = () => {
               <select
                 onChange={handleChange}
                 name={"status"}
+                value={order.status}
                 className={inputs.inputGroupInput}
               >
                 <option></option>

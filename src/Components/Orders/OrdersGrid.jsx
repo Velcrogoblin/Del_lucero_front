@@ -21,6 +21,7 @@ export const OrdersGrid = () => {
           <tr className={tables.tableHeader}>
             <th className={tables.tableHeaderItem}>Nombre</th>
             <th className={tables.tableHeaderItem}>Estado</th>
+            <th className={tables.tableHeaderItem}>Pagado</th>
             <th className={tables.tableHeaderItem}>Fecha de Entrega</th>
             <th className={tables.tableHeaderItem}>Editar</th>
             {/* <th className={tables.tableHeaderItem}>Borrar</th> */}
@@ -32,6 +33,7 @@ export const OrdersGrid = () => {
               <tr key={o.order_id}>
                 <td className={tables.tableItem}>{o.Client.name}</td>
                 <td className={tables.tableItem}>{o.status}</td>
+                <td className={tables.tableItem}>{o.paid === false ? "No" : "Si"}</td>
                 <td className={tables.tableItem}>
                   {`${new Date(o.delivery_date).getUTCDate()} / ${
                     new Date(o.delivery_date).getUTCMonth() + 1

@@ -97,6 +97,7 @@ export const OrderCreate = () => {
       console.log(response);
       setLoading(false);
       alert(response.data.message);
+      navigate("/orders");
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -251,6 +252,18 @@ export const OrderCreate = () => {
               >
                 <option></option>
                 <option value={"En preparacion"}>En preparación</option>
+              </select>
+            </div>
+            <div className={inputs.inputGroup}>
+              <label className={inputs.inputGroupLabel}>Pagado: </label>
+              <select
+                onChange={handleChange}
+                name={"paid"}
+                className={inputs.inputGroupInput}
+              >
+                <option></option>
+                <option value={false}>No</option>
+                <option value={true}>Si</option>
               </select>
             </div>
             <div
