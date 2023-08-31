@@ -15,13 +15,13 @@ export const ProviderCreate = () => {
     phone: "",
     address: "",
     website: "",
-    supplies: [],
+    supplies_name: [],
   });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    if (e.target.name === "supplies") {
-      setProvider({...provider, supplies: [e.target.value] })
+    if (e.target.name === "supplies_name") {
+      setProvider({...provider, supplies_name: [e.target.value] })
     } else {
     setProvider({ ...provider, [e.target.name]: e.target.value });
     }
@@ -33,7 +33,7 @@ export const ProviderCreate = () => {
       phone: "",
       address: "",
       website: "",
-      supplies: [],
+      supplies_name: [],
     });
   };
 
@@ -48,6 +48,7 @@ export const ProviderCreate = () => {
       alert(response.data.message);
       console.log(response);
       handleReset();
+      console.log(provider);
     } catch (error) {
       setLoading(false);
       console.error(error);
@@ -125,13 +126,13 @@ export const ProviderCreate = () => {
             <div className={inputs.inputGroup}>
               <input
                 type="text"
-                name="supplies"
+                name="supplies_name"
                 id="supplies"
                 className={inputs.inputGroupInput}
                 onChange={handleChange}
                 required
               />
-              <label htmlFor="supplies" className={inputs.inputGroupLabel}>
+              <label htmlFor="supplies_name" className={inputs.inputGroupLabel}>
                 Insumos
               </label>
             </div>
