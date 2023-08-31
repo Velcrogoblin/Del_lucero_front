@@ -54,15 +54,15 @@ function App() {
         {/* <Route path="/register" element={<Register />} /> */}
         <Route index element={<Menu />} />
 
-        <Route path="/clients/" element={<ClientsGrid />} />
-        <Route path="/clients/create" element={<ClientCreate />} />
-        <Route path="/clients/id/:id" element={<ClientEdit />} />
-        {/* <Route path="/clients/grid" element={<ClientsGrid />} /> */}
+          <Route path="/clients" element={<Clients />} />
+          <Route path="/clients/create" element={<ClientCreate />} />
+          <Route path="/clients/id/:id" element={<ClientEdit />} />
+          <Route path="/clients/grid" element={<ClientsGrid />} />
 
         <Route path="/sales" element={<Sales />} />
         <Route path="/sales/history" element={<SalesHistory />} />
 
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders" element={<OrdersGrid />} />
         <Route path="/orders/grid" element={<OrdersGrid />} />
         <Route path="/orders/create" element={<OrderCreate />} />
         <Route path="/orders/edit/:id" element={<OrderEdit />} />

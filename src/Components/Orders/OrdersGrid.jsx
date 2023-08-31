@@ -16,7 +16,13 @@ export const OrdersGrid = () => {
 
   return (
     <div className={containers.ordersContainer}>
-      <table className={tables.orderTable}>
+      <div
+        className={buttons.buttonMenu}
+        onClick={() => navigate("/orders/create")}
+      >
+        Crear pedido
+      </div>
+      {/* <table className={tables.orderTable}>
         <thead className={tables.tableHeader}>
           <tr className={tables.tableHeader}>
             <th className={tables.tableHeaderItem}>Nombre</th>
@@ -25,7 +31,7 @@ export const OrdersGrid = () => {
             <th className={tables.tableHeaderItem}>Fecha de Entrega</th>
             <th className={tables.tableHeaderItem}>Editar</th>
             {/* <th className={tables.tableHeaderItem}>Borrar</th> */}
-          </tr>
+          {/* </tr>
         </thead>
         <tbody>
           {orders &&
@@ -52,8 +58,20 @@ export const OrdersGrid = () => {
               </tr>
             ))}
         </tbody>
-      </table>
-      <div className={buttons.createButton} onClick={() => navigate("/orders")}>
+      </table> */}
+      <div className = {containers.ordersContainerNew}>
+        {orders && orders.map((o) => (
+          <div key= {o.order_id} className={containers.order} onClick={() => navigate(`/orders/edit/${o.order_id}`)}>
+            <p>{o.Client.name}</p>
+            <p>{`${new Date(o.delivery_date).getUTCDate()} / ${
+                    new Date(o.delivery_date).getUTCMonth() + 1
+                  }`}</p>
+            <p>{o.status}</p>
+            <p>{o.paid === false ? "No pagó" : "Pagado"}</p>
+          </div>
+        ))}
+      </div>
+      <div onClick={() => navigate("/")} className={buttons.buttonMenu}>
         Volver
       </div>
     </div>
