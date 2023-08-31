@@ -62,7 +62,7 @@ function App() {
         <Route path="/sales" element={<Sales />} />
         <Route path="/sales/history" element={<SalesHistory />} />
 
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders" element={<OrdersGrid />} />
         <Route path="/orders/grid" element={<OrdersGrid />} />
         <Route path="/orders/create" element={<OrderCreate />} />
         <Route path="/orders/edit/:id" element={<OrderEdit />} />
