@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loading } from "../Loading/Loading";
 import style from "./createclient.module.css";
 import buttons from "../../styles/buttons.module.css";
@@ -9,7 +9,6 @@ const VITE_URL_CLIENTS = import.meta.env.VITE_URL_CLIENTS;
 
 export const ClientCreate = () => {
   const navigate = useNavigate();
-  const [token, setToken] = useState("");
   const [client, setClient] = useState({
     name: "",
     phone: "",
@@ -19,6 +18,7 @@ export const ClientCreate = () => {
 
   const handleChange = (e) => {
     setClient({ ...client, [e.target.name]: e.target.value });
+    console.log("aca client", typeof client);
   };
 
   const handleReset = () => {
@@ -30,27 +30,20 @@ export const ClientCreate = () => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(VITE_URL_CLIENTS, {
-        ...client,
-        token,
-      });
+      const response = await axios.post(VITE_URL_CLIENTS, client);
       setLoading(false);
       alert(response.data.message);
-      console.log(response);
       handleReset();
+      navigate("/clients");
     } catch (error) {
       setLoading(false);
       console.error(error);
       alert(error.response.data.message);
     }
   };
-
-  useEffect(() => {
-    setToken(JSON.parse(window.localStorage.getItem("token")));
-  }, []);
-
   return (
     <>
       <h3 style={{ color: "white", textAlign: "center" }}>
@@ -61,7 +54,6 @@ export const ClientCreate = () => {
       ) : (
         <div className={style.mainForm}>
           <form onSubmit={(e) => handleSubmit(e)}>
-            <br />
             <div className={inputs.inputGroup}>
               <input
                 type="text"
@@ -103,7 +95,7 @@ export const ClientCreate = () => {
             </div>
             <div
               className={buttons.createButton}
-              onClick={() => handleSubmit()}
+              onClick={(e) => handleSubmit(e)}
             >
               Agendar
             </div>

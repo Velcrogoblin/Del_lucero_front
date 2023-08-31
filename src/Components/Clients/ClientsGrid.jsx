@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import deleteImage from "../../Image/delete.png";
+//import deleteImage from "../../Image/delete.png";
 import editImage from "../../Image/lapiz.png";
 import axios from "axios";
 import style from "./createclient.module.css";
 import buttons from "../../styles/buttons.module.css";
 import tables from "../../styles/tables.module.css";
-import inputs from "../../styles/inputs.module.css";
 import caneca from "../../Image/delete.png";
 import onActive from "../../Image/on.png";
 import { Loading } from "../Loading/Loading";
@@ -39,7 +38,7 @@ export const ClientsGrid = () => {
 
   useEffect(() => {
     axios
-      .get(VITE_URL_CLIENTS)
+      .get("http://localhost:3001/clients/")
       .then((resp) => setClient(resp.data))
       .catch((err) => console.error(err));
     setToken(JSON.parse(window.localStorage.getItem("token")));
@@ -51,7 +50,7 @@ export const ClientsGrid = () => {
         <Loading />
       ) : (
         <>
-          <h4 style={{ color: "white", textAlign: "center" }}>Clientes</h4>
+          <h2 style={{ color: "white", textAlign: "center" }}>Clientes</h2>
           <table className={tables.mainTable}>
             <thead>
               <tr className={tables.tableRow}>
@@ -110,12 +109,13 @@ export const ClientsGrid = () => {
                 })}
             </tbody>
           </table>
-
           <div
-            type="button"
+            onClick={() => navigate("/clients/create")}
             className={buttons.createButton}
-            onClick={() => navigate("/clients")}
           >
+            Crear cliente
+          </div>
+          <div onClick={() => navigate("/")} className={buttons.createButton}>
             Volver
           </div>
         </>
