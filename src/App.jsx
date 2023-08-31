@@ -39,7 +39,7 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Wrapper />}>
+        {/* <Route path="/" element={<Wrapper />}>
           {isLoggedIn ? (
             <Route
               index
@@ -48,37 +48,36 @@ function App() {
               }
             />
           ) : (
-            <Route index element={<Login setToken={setToken} />} />
-          )}
-          {/* <Route index element={<Menu />} /> */}
-          {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/register" element={<Register />} />
+            // <Route index element={<Login setToken={setToken} />} />
+          )} */}
+        {/* <Route path="/login" element={<Login />} /> */}
+        {/* <Route path="/register" element={<Register />} /> */}
+        <Route index element={<Menu />} />
 
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/clients/create" element={<ClientCreate />} />
-          <Route path="/clients/id/:id" element={<ClientEdit />} />
-          <Route path="/clients/grid" element={<ClientsGrid />} />
+        <Route path="/clients/" element={<ClientsGrid />} />
+        <Route path="/clients/create" element={<ClientCreate />} />
+        <Route path="/clients/id/:id" element={<ClientEdit />} />
+        {/* <Route path="/clients/grid" element={<ClientsGrid />} /> */}
 
-          <Route path="/sales" element={<Sales />} />
-          <Route path="/sales/history" element={<SalesHistory />} />
+        <Route path="/sales" element={<Sales />} />
+        <Route path="/sales/history" element={<SalesHistory />} />
 
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/orders/grid" element={<OrdersGrid />} />
-          <Route path="/orders/create" element={<OrderCreate />} />
-          <Route path="/orders/edit/:id" element={<OrderEdit />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders/grid" element={<OrdersGrid />} />
+        <Route path="/orders/create" element={<OrderCreate />} />
+        <Route path="/orders/edit/:id" element={<OrderEdit />} />
 
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/grid" element={<ProductsGrid />} />
-          <Route path="/products/create" element={<ProductCreate />} />
-          <Route path="/products/edit/:id" element={<ProductEdit />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/grid" element={<ProductsGrid />} />
+        <Route path="/products/create" element={<ProductCreate />} />
+        <Route path="/products/edit/:id" element={<ProductEdit />} />
 
-          <Route path="/providers" element={<Providers />} />
-          <Route path="/providers/create" element={<ProviderCreate />} />
-          <Route path="/providers/edit" element={<ProviderEdit />} />
+        <Route path="/providers" element={<Providers />} />
+        <Route path="/providers/create" element={<ProviderCreate />} />
+        <Route path="/providers/edit" element={<ProviderEdit />} />
 
-          <Route path="/catalogue" element={<Catalogue />} />
-          <Route path="/detail/:id" element={<Detail />} />
-        </Route>
+        <Route path="/catalogue" element={<Catalogue />} />
+        <Route path="/detail/:id" element={<Detail />} />
       </Routes>
     </div>
   );

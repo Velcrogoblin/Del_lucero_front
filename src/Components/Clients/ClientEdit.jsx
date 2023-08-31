@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import style from "./createclient.module.css";
@@ -23,6 +23,7 @@ export const ClientEdit = () => {
       });
       alert(res.data.message);
       setLoading(false);
+      navigate("/clients");
     } catch (error) {
       setLoading(false);
       alert(error.message);
@@ -92,7 +93,7 @@ export const ClientEdit = () => {
               <div
                 type="button"
                 className={buttons.createButton}
-                onClick={() => navigate("/clients/grid")}
+                onClick={() => navigate("/clients/")}
               >
                 Volver
               </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import inputs from "../../styles/inputs.module.css";
 import buttons from "../../styles/buttons.module.css";
@@ -9,7 +9,7 @@ import { Loading } from "../Loading/Loading";
 import { Link } from "react-router-dom";
 const VITE_URL_AUTH = import.meta.env.VITE_URL_AUTH;
 
-export const Login = ({ setToken }) => {
+export const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
     username: "",
