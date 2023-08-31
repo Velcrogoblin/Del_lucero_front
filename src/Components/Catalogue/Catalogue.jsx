@@ -14,8 +14,6 @@ export const Catalogue = () => {
     axios.get(VITE_URL_PRODUCTS).then((response) => setProducts(response.data));
   }, []);
 
-  console.log(products);
-
   return (
     <div className={styles.containerCatalogue}>
       <div className={styles.gridProducts}>
