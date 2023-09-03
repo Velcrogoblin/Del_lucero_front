@@ -24,7 +24,7 @@ export const Providers = () => {
       </div>
       
       {providers && providers.map((p) => (
-        <div key = {p.name} onClick={() => navigate("/providers/edit")} className = {containers.order}>{p.name}</div>
+        <div key = {p.name} onClick={() => navigate(`/providers/edit/${p.supplier_id}`)} className = {containers.order}>{p.name}</div>
       ))}
       <div onClick={() => navigate("/")} className={buttons.buttonMenu}>
         Volver
