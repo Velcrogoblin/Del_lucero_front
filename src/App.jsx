@@ -74,7 +74,7 @@ function App() {
 
         <Route path="/providers" element={<Providers />} />
         <Route path="/providers/create" element={<ProviderCreate />} />
-        <Route path="/providers/edit" element={<ProviderEdit />} />
+        <Route path="/providers/edit/:id" element={<ProviderEdit />} />
 
         <Route path="/catalogue" element={<Catalogue />} />
         <Route path="/detail/:id" element={<Detail />} />

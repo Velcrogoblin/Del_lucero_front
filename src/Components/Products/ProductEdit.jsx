@@ -17,6 +17,7 @@ export const ProductEdit = () => {
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async () => {
     setLoading(true);
     if (token.length < 150) {
