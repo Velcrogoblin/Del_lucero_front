@@ -89,17 +89,14 @@ export const OrderCreate = () => {
   const handleSubmit = async (e) => {
     setLoading(true);
     try {
-      console.log(order);
       let response = await axios.post(VITE_URL_ORDERS, {
         ...order,
         token,
       });
-      console.log(response);
       setLoading(false);
       alert(response.data.message);
       navigate("/orders");
     } catch (error) {
-      console.log(error);
       setLoading(false);
       alert(error.response.data.error);
     }

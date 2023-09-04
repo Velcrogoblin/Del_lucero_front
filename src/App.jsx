@@ -24,6 +24,9 @@ import { Detail } from "./Components/Detail/Detail";
 import { ClientsGrid } from "./Components/Clients/ClientsGrid";
 import { ProductsGrid } from "./Components/Products/ProductsGrid";
 import { OrdersGrid } from "./Components/Orders/OrdersGrid";
+import { ExpenseCreate } from "./Components/Expenses/ExpenseCreate";
+import { Expenses } from "./Components/Expenses/Expenses";
+import { ExpenseEdit } from "./Components/Expenses/ExpenseEdit";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,7 +66,6 @@ function App() {
         <Route path="/sales/history" element={<SalesHistory />} />
 
         <Route path="/orders" element={<OrdersGrid />} />
-        <Route path="/orders/grid" element={<OrdersGrid />} />
         <Route path="/orders/create" element={<OrderCreate />} />
         <Route path="/orders/edit/:id" element={<OrderEdit />} />
 
@@ -75,6 +77,10 @@ function App() {
         <Route path="/providers" element={<Providers />} />
         <Route path="/providers/create" element={<ProviderCreate />} />
         <Route path="/providers/edit/:id" element={<ProviderEdit />} />
+
+        <Route path="/expenses" element={<Expenses/>} />
+        <Route path="/expenses/create" element={<ExpenseCreate/>} />
+        <Route path="/expenses/edit/:id" element={<ExpenseEdit />} />
 
         <Route path="/catalogue" element={<Catalogue />} />
         <Route path="/detail/:id" element={<Detail />} />
