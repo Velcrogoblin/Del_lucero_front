@@ -83,17 +83,14 @@ export const OrderEdit = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      console.log(order);
       let response = await axios.put(VITE_URL_ORDERS, {
         ...order,
         token,
       });
-      console.log(response);
       setLoading(false);
       alert(response.data.message);
-      navigate("/orders/grid");
+      navigate("/orders");
     } catch (error) {
-      console.log(error);
       setLoading(false);
       alert(error.message);
 
@@ -146,7 +143,7 @@ export const OrderEdit = () => {
               >
                 <option>Seleccione uno o mas productos</option>
                 {products &&
-                  products.map((p) => {
+                  products?.map((p) => {
                     let productAlreadyAdded;
                     if (order.products) {
                       productAlreadyAdded = order.products.some(
@@ -284,7 +281,7 @@ export const OrderEdit = () => {
               Editar Orden
             </div>
             <div
-              onClick={() => navigate("/orders/grid")}
+              onClick={() => navigate("/orders")}
               className={buttons.createButton}
             >
               Volver

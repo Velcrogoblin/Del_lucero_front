@@ -50,6 +50,12 @@ export const Menu = ({ setToken, setIsLoggedIn }) => {
         >
           Proveedores
         </div>
+        <div
+          className={buttons.buttonMenu}
+          onClick={() => navigate("/expenses")}
+        >
+          Gastos
+        </div>
         <div className={buttons.buttonMenu} onClick={handleExit}>
           Salir
         </div>
