@@ -21,9 +21,9 @@ export const ProviderCreate = () => {
 
   const handleChange = (e) => {
     if (e.target.name === "supplies_name") {
-      setProvider({...provider, supplies_name: [e.target.value] })
+      setProvider({ ...provider, supplies_name: [e.target.value] });
     } else {
-    setProvider({ ...provider, [e.target.name]: e.target.value });
+      setProvider({ ...provider, [e.target.name]: e.target.value });
     }
   };
 
@@ -46,12 +46,11 @@ export const ProviderCreate = () => {
       });
       setLoading(false);
       alert(response.data.message);
-      console.log(response);
-      handleReset();
-      console.log(provider);
+
+      navigate("/providers");
     } catch (error) {
       setLoading(false);
-      console.error(error);
+
       alert(error.response.data.message);
     }
   };

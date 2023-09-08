@@ -8,6 +8,9 @@ import { Loading } from "../Loading/Loading";
 const VITE_URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
 const VITE_URL_CLIENTS = import.meta.env.VITE_URL_CLIENTS;
 const VITE_URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCTS;
+const VITE_URL_SUPPLIES = import.meta.env.VITE_URL_SUPPLIES;
+const VITE_URL_PURCHASES = import.meta.env.VITE_URL_PURCHASES;
+
 
 export const OrderCreate = () => {
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ export const OrderCreate = () => {
   const [loading, setLoading] = useState(false);
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
+  const [supplies, setSupplies] = useState();
 
   const handleChange = (e) => {
     setOrder({
@@ -28,6 +32,7 @@ export const OrderCreate = () => {
   };
 
   const handleUpdateProductQuantity = (productId, operation) => {
+    const productAux = products.find((p) => p.product_id === productId);
     const updatedProducts = order.products.map((product) =>
       product.product_id === productId
         ? {
@@ -60,6 +65,7 @@ export const OrderCreate = () => {
 
   const handleAddProduct = (e) => {
     const selectedProductId = parseInt(e.target.value);
+    const productAux = products.find((p) => p.product_id === selectedProductId);
     const existingProduct = order.products.find(
       (product) => product.product_id === selectedProductId
     );
@@ -67,9 +73,11 @@ export const OrderCreate = () => {
     if (existingProduct) {
       const updatedProducts = order.products.map((product) =>
         product.product_id === selectedProductId
-          ? { ...product, quantity: product.quantity + 1 }
+          ? { ...product, quantity: product.quantity + 1}
           : product
       );
+
+
 
       setOrder({
         ...order,
@@ -80,7 +88,7 @@ export const OrderCreate = () => {
         ...order,
         products: [
           ...order.products,
-          { product_id: selectedProductId, quantity: 1 },
+          { product_id: selectedProductId, quantity: 1, price: (productAux.weight / 1000) * supplies[0].cost * productAux.earning_percentage },
         ],
       });
     }
@@ -89,12 +97,19 @@ export const OrderCreate = () => {
   const handleSubmit = async (e) => {
     setLoading(true);
     try {
+
       let response = await axios.post(VITE_URL_ORDERS, {
         ...order,
         token,
       });
       setLoading(false);
       alert(response.data.message);
+      if(order.status === "Entregada" && (order.paid === true || order.paid === "true")) {
+        await axios.post(VITE_URL_PURCHASES, {
+          ...order,
+          token,
+        });
+      }
       navigate("/orders");
     } catch (error) {
       setLoading(false);
@@ -105,6 +120,7 @@ export const OrderCreate = () => {
   useEffect(() => {
     axios.get(VITE_URL_PRODUCTS).then((res) => setProducts(res.data));
     axios.get(VITE_URL_CLIENTS).then((res) => setClients(res.data));
+    axios.get(VITE_URL_SUPPLIES).then((res) => setSupplies(res.data.filter((s) => s.name === "cera")));
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
 
@@ -249,8 +265,21 @@ export const OrderCreate = () => {
               >
                 <option></option>
                 <option value={"En preparacion"}>En preparación</option>
+                <option value={"Cancelada"}>Cancelada</option>
+                <option value={"Lista para entregar"}>
+                  Lista para entregar
+                </option>
+                <option value={"Entregada"}>Entregada</option>
               </select>
             </div>
+            <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>Descuento </label>
+                <input
+                  name="discount"
+                  onChange={handleChange}
+                  className={inputs.inputGroupInput}
+                />
+              </div>
             <div className={inputs.inputGroup}>
               <label className={inputs.inputGroupLabel}>Pagado: </label>
               <select

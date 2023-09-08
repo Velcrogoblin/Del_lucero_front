@@ -27,6 +27,11 @@ import { OrdersGrid } from "./Components/Orders/OrdersGrid";
 import { ExpenseCreate } from "./Components/Expenses/ExpenseCreate";
 import { Expenses } from "./Components/Expenses/Expenses";
 import { ExpenseEdit } from "./Components/Expenses/ExpenseEdit";
+import { Supplies } from "./Components/Supplies/Supplies";
+import { SupplyCreate } from "./Components/Supplies/SupplyCreate";
+import { SupplyEdit } from "./Components/Supplies/SupplyEdit";
+import { PurchasesGrid } from "./Components/Purchases/Purchases";
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,7 +47,7 @@ function App() {
   return (
     <div>
       <Routes>
-        {/* <Route path="/" element={<Wrapper />}>
+        <Route path="/" element={<Wrapper />}/>
           {isLoggedIn ? (
             <Route
               index
@@ -51,10 +56,10 @@ function App() {
               }
             />
           ) : (
-            // <Route index element={<Login setToken={setToken} />} />
-          )} */}
-        {/* <Route path="/login" element={<Login />} /> */}
-        {/* <Route path="/register" element={<Register />} /> */}
+            <Route index element={<Login setToken={setToken} />} />
+          )}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route index element={<Menu />} />
 
           <Route path="/clients" element={<Clients />} />
@@ -82,8 +87,14 @@ function App() {
         <Route path="/expenses/create" element={<ExpenseCreate/>} />
         <Route path="/expenses/edit/:id" element={<ExpenseEdit />} />
 
+        <Route path="/supplies" element={<Supplies/>} />
+        <Route path="/supplies/create" element={<SupplyCreate/>} />
+        <Route path="/supplies/edit/:id" element={<SupplyEdit />} />
+
         <Route path="/catalogue" element={<Catalogue />} />
         <Route path="/detail/:id" element={<Detail />} />
+
+        <Route path="/purchases" element={<PurchasesGrid />} />
       </Routes>
     </div>
   );
