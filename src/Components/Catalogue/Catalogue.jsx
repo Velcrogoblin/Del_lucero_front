@@ -16,6 +16,12 @@ export const Catalogue = () => {
 
   return (
     <div className={styles.containerCatalogue}>
+      <div
+        className={buttons.buttonMenu}
+        onClick={() => navigate("/products/create")}
+      >
+        Crear producto
+      </div>
       <div className={styles.gridProducts}>
         {products &&
           products?.map((p) => {

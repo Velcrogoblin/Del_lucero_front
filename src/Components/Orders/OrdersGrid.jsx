@@ -33,6 +33,7 @@ export const OrdersGrid = () => {
                 new Date(o.delivery_date).getUTCMonth() + 1
               }`}</p>
               <p>{o.status}</p>
+              <p>${o.total_amount}</p>
               <p>{o.paid === false ? "No pagó" : "Pagado"}</p>
             </div>
           ))}

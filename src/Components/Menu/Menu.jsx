@@ -19,22 +19,22 @@ export const Menu = ({ setToken, setIsLoggedIn }) => {
       <div className={styles.spacesMenu}>
         <div
           className={buttons.buttonMenu}
-          onClick={() => navigate("/products")}
+          onClick={() => navigate("/catalogue")}
         >
-          Gestion de producto
+          Productos
         </div>
         <div
           className={buttons.buttonMenu}
-          onClick={() => navigate("/catalogue")}
+          onClick={() => navigate("/supplies")}
         >
-          Catalogo
+          Insumos
         </div>
         <div className={buttons.buttonMenu} onClick={() => navigate("/orders")}>
           Pedidos
         </div>
         <div
           className={buttons.buttonMenu}
-          onClick={() => navigate("/sales/history")}
+          onClick={() => navigate("/purchases")}
         >
           Historial de ventas
         </div>

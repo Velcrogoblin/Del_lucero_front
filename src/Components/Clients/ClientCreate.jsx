@@ -18,7 +18,6 @@ export const ClientCreate = () => {
 
   const handleChange = (e) => {
     setClient({ ...client, [e.target.name]: e.target.value });
-    console.log("aca client", typeof client);
   };
 
   const handleReset = () => {

@@ -14,8 +14,7 @@ export const ProductCreate = () => {
     width: 0,
     height: 0,
     weight: 0,
-    stock: 0,
-    price: 0,
+    earning_percentage: 0,
     img: "",
     duration: 0,
   });
@@ -25,18 +24,6 @@ export const ProductCreate = () => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const handleReset = () => {
-    setProduct({
-      name: "",
-      width: 0,
-      height: 0,
-      weight: 0,
-      stock: 0,
-      price: 0,
-      img: "",
-      duration: 0,
-    });
-  };
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -52,7 +39,7 @@ export const ProductCreate = () => {
         setLoading(false);
         alert(response.data.message);
 
-        handleReset();
+        navigate("/catalogue")
       } catch (error) {
         setLoading(false);
         alert(error.response.data.message);
@@ -111,20 +98,12 @@ export const ProductCreate = () => {
                   className={inputs.inputGroupInput}
                 />
               </div>
+              
               <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Stock </label>
+                <label className={inputs.inputGroupLabel}>Múltiplo de ganancia </label>
                 <input
-                  name="stock"
-                  value={product.stock}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Precio </label>
-                <input
-                  name="price"
-                  value={product.price}
+                  name="earning_percentage"
+                  value={product.earning_percentage}
                   onChange={handleChange}
                   className={inputs.inputGroupInput}
                 />
@@ -155,13 +134,7 @@ export const ProductCreate = () => {
             >
               Crear
             </div>
-            <div
-              type="button"
-              onClick={handleReset}
-              className={buttons.createButton}
-            >
-              Limpiar campos
-            </div>
+            
             <div
               onClick={() => navigate("/products")}
               className={buttons.createButton}

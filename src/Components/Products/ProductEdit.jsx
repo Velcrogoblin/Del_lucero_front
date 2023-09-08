@@ -30,7 +30,7 @@ export const ProductEdit = () => {
         });
         setLoading(false);
         alert("Producto editado");
-        navigate("/products/grid");
+        navigate("/catalogue");
       } catch (error) {
         setLoading(false);
         alert("Ocurrió un error");
@@ -94,24 +94,6 @@ export const ProductEdit = () => {
                 />
               </div>
               <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Stock </label>
-                <input
-                  name="stock"
-                  value={product.stock}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Precio </label>
-                <input
-                  name="price"
-                  value={product.price}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-              <div className={inputs.inputGroup}>
                 <label className={inputs.inputGroupLabel}>Imagen </label>
                 <input
                   name="img"
@@ -139,7 +121,7 @@ export const ProductEdit = () => {
             </div>
             <div
               className={buttons.createButton}
-              onClick={() => navigate("/products/grid")}
+              onClick={() => navigate("/catalogue")}
             >
               Volver
             </div>
