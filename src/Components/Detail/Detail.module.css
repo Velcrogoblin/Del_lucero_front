@@ -1,31 +1,42 @@
-.containerDetail{
+.containerDetail {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 auto;
+  margin: 2rem;
 }
 
-.imageDetail{
-  height: 200px;
-  width: 200px;
-  border-radius: 5px;
+.detailVela button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 0;
+  background-color: rgb(94, 245, 184);
   border: none;
-  box-shadow: 1px 0px 0px 1px hsl(169, 54%, 73%);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
 }
 
-.detailVela{
+.detailVela {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.infoDetail{
-  margin: 1rem;
-  color:white;
+.detailVela h2 {
+  font-size: 18pt;
 }
 
-.nameDetail{
-  color: aqua;
+.detailVela img {
+  height: 200px;
+  width: 200px;
+  border: none;
+}
+
+.detailVela span {
+  margin-bottom: 20px;
+}
+
+.infoDetail {
   margin: 1rem;
+  color: white;
 }

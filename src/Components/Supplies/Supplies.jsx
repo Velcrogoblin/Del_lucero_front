@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import buttons from "../../styles/buttons.module.css";
-import containers from "../../styles/containers.module.css";
+import styles from "./Supplies.module.css";
 const VITE_URL_SUPPLIES = import.meta.env.VITE_URL_SUPPLIES;
 
 export const Supplies = () => {
@@ -16,25 +15,22 @@ export const Supplies = () => {
   }, []);
 
   return (
-    <div className={containers.ordersContainer}>
-      <div
-        className={buttons.buttonMenu}
-        onClick={() => navigate("/supplies/create")}
-      >
-        Crear insumo
-      </div>
-      <div className={containers.ordersContainerNew}>
+    <div className={styles.containerSupplies}>
+      <div className={styles.gridSupplies}>
         {supplies &&
           supplies.map((s) => (
-            <div key={s.supply_id} className={containers.order} onClick={() => navigate(`/supplies/edit/${s.supply_id}`)}>
-              <p>{s.name}</p>
-              <p>{s.cost}</p>
+            <div
+              key={s.supply_id}
+              className={styles.cards}
+              onClick={() => navigate(`/supplies/edit/${s.supply_id}`)}
+            >
+              <p>{s.name.toUpperCase()}</p>
+              <p>${s.cost}</p>
             </div>
           ))}
       </div>
-      <div onClick={() => navigate("/")} className={buttons.buttonMenu}>
-        Volver
-      </div>
+      <button onClick={() => navigate("/supplies/create")}>+</button>
+      <button onClick={() => navigate("/")}>VOLVER</button>
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { Loading } from "../Loading/Loading";
 import inputs from "../../styles/inputs.module.css";
 import styles from "./orders.module.css";
 import buttons from "../../styles/buttons.module.css";
-import { Loading } from "../Loading/Loading";
 const VITE_URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
 const VITE_URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCTS;
 const VITE_URL_SUPPLIES = import.meta.env.VITE_URL_SUPPLIES;
@@ -15,15 +15,9 @@ export const OrderEdit = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState();
-  const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
   const [supplies, setSupplies] = useState();
   const [token, setToken] = useState("");
-  const [purchase, setPurchase] = useState ({
-    products: [],
-    date: "",
-    total_amount: 0
-  })
 
   const handleChange = (e) => {
     setOrder({ ...order, [e.target.name]: e.target.value });
@@ -63,6 +57,8 @@ export const OrderEdit = () => {
   const handleAddProduct = (e) => {
     const selectedProductId = parseInt(e.target.value);
     const productAux = products.find((p) => p.product_id === selectedProductId);
+    let priceAux = 0;
+    productAux.Supplies.map((s) => s.name === "cera" ? priceAux += Math.round(s.cost * (productAux.weight / 1000)) : priceAux += s.cost);
     const existingProduct = order.products.find(
       (product) => product.product_id === selectedProductId
     );
@@ -83,7 +79,11 @@ export const OrderEdit = () => {
         ...order,
         products: [
           ...order.products,
-          { product_id: selectedProductId, quantity: 1, price: (productAux.weight / 1000) * supplies[0].cost * productAux.earning_percentage },
+          {
+            product_id: selectedProductId,
+            quantity: 1,
+            price: priceAux * productAux.earning_percentage,
+          },
         ],
       });
     }
@@ -98,17 +98,25 @@ export const OrderEdit = () => {
       });
       setLoading(false);
       alert(response.data.message);
-      if(order.status === "Entregada" && (order.paid === true || order.paid === "true")) {
+      if (
+        order.status === "Entregado" &&
+        (order.paid === true || order.paid === "true")
+      ) {
         await axios.post(VITE_URL_PURCHASES, {
           ...order,
           token,
         });
+        let deleteResponse = await axios.put(`${VITE_URL_ORDERS}delete`, {
+          ...order,
+          token,
+        });
+        alert(deleteResponse.data.message);
       }
+
       navigate("/orders");
     } catch (error) {
       setLoading(false);
       alert(error.message);
-
     }
   };
 
@@ -129,21 +137,22 @@ export const OrderEdit = () => {
       .then((res) => setProducts(res.data))
       .then(() => setLoading(false));
 
-    axios.get(VITE_URL_SUPPLIES).then((res) => setSupplies(res.data.filter((s) => s.name === "cera")));
+    axios
+      .get(VITE_URL_SUPPLIES)
+      .then((res) => setSupplies(res.data.filter((s) => s.name === "cera")));
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
-
-  
 
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <>
+        <div className={styles.containerEdit}>
+          <h2>EDITAR PRODUCTO</h2>
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Cliente: </label>
+              <label className={inputs.inputGroupLabel}>Cliente:</label>
               {order?.Client && (
                 <input
                   value={order.Client.name}
@@ -153,7 +162,7 @@ export const OrderEdit = () => {
               )}
             </div>
             <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Productos: </label>
+              <label className={inputs.inputGroupLabel}>Productos:</label>
               <select
                 onChange={(e) => handleAddProduct(e)}
                 className={inputs.inputGroupInput}
@@ -236,9 +245,9 @@ export const OrderEdit = () => {
                                 onClick={() =>
                                   handleDeleteProduct(p.product_id)
                                 }
-                                className={buttons.substractButton}
+                                className={buttons.deleteButton}
                               >
-                                B
+                                X
                               </span>
                             </div>
                           </div>
@@ -275,7 +284,7 @@ export const OrderEdit = () => {
               </select>
             </div>
             <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Estado: </label>
+              <label className={inputs.inputGroupLabel}>Estado:</label>
               <select
                 onChange={handleChange}
                 name={"status"}
@@ -283,23 +292,23 @@ export const OrderEdit = () => {
                 className={inputs.inputGroupInput}
               >
                 <option></option>
-                <option value={"Cancelada"}>Cancelada</option>
-                <option value={"En preparacion"}>En preparación</option>
-                <option value={"Lista para entregar"}>
-                  Lista para entregar
+                <option value={"Cancelado"}>Cancelado</option>
+                <option value={"En preparación"}>En preparación</option>
+                <option value={"Listo para entregar"}>
+                  Listo para entregar
                 </option>
-                <option value={"Entregada"}>Entregada</option>
+                <option value={"Entregado"}>Entregado</option>
               </select>
             </div>
             <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Descuento </label>
-                <input
-                  name="discount"
-                  value={order?.discount}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
+              <label className={inputs.inputGroupLabel}>Descuento:</label>
+              <input
+                name="discount"
+                value={order?.discount}
+                onChange={handleChange}
+                className={inputs.inputGroupInput}
+              />
+            </div>
             <div className={inputs.inputGroup}>
               <label className={inputs.inputGroupLabel}>Pagado:</label>
               <select
@@ -310,23 +319,13 @@ export const OrderEdit = () => {
               >
                 <option></option>
                 <option value={false}>No</option>
-                <option value={true}>Si</option>
+                <option value={true}>Sí</option>
               </select>
             </div>
-            <div
-              onClick={() => handleSubmit()}
-              className={buttons.createButton}
-            >
-              Editar Orden
-            </div>
-            <div
-              onClick={() => navigate("/orders")}
-              className={buttons.createButton}
-            >
-              Volver
-            </div>
           </form>
-        </>
+          <button onClick={() => handleSubmit()}>MODIFICAR</button>
+          <button onClick={() => navigate("/orders")}>VOLVER</button>
+        </div>
       )}
     </>
   );

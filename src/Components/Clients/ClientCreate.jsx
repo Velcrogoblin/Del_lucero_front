@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Loading } from "../Loading/Loading";
-import style from "./createclient.module.css";
-import buttons from "../../styles/buttons.module.css";
-import inputs from "../../styles/inputs.module.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Loading } from "../Loading/Loading";
+import styles from "./ClientCreate.module.css";
+import inputs from "../../styles/inputs.module.css";
 const VITE_URL_CLIENTS = import.meta.env.VITE_URL_CLIENTS;
 
 export const ClientCreate = () => {
@@ -45,13 +44,13 @@ export const ClientCreate = () => {
   };
   return (
     <>
-      <h3 style={{ color: "white", textAlign: "center" }}>
-        Crear cliente nuevo
-      </h3>
       {loading ? (
         <Loading />
       ) : (
-        <div className={style.mainForm}>
+        <div className={styles.containerCreate}>
+          <h2 style={{ color: "white", textAlign: "center" }}>
+            CREAR CLIENTE NUEVO
+          </h2>
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className={inputs.inputGroup}>
               <input
@@ -63,7 +62,7 @@ export const ClientCreate = () => {
                 required
               />
               <label htmlFor="name" className={inputs.inputGroupLabel}>
-                Nombre
+                Nombre:
               </label>
             </div>
             <div className={inputs.inputGroup}>
@@ -76,7 +75,7 @@ export const ClientCreate = () => {
                 required
               />
               <label htmlFor="address" className={inputs.inputGroupLabel}>
-                Direccion
+                Dirección:
               </label>
             </div>
             <div className={inputs.inputGroup}>
@@ -89,23 +88,12 @@ export const ClientCreate = () => {
                 required
               />
               <label htmlFor="phone" className={inputs.inputGroupLabel}>
-                Telefono
+                Teléfono:
               </label>
             </div>
-            <div
-              className={buttons.createButton}
-              onClick={(e) => handleSubmit(e)}
-            >
-              Agendar
-            </div>
-            <div
-              type="button"
-              className={buttons.createButton}
-              onClick={() => navigate("/clients")}
-            >
-              Volver
-            </div>
           </form>
+          <button onClick={handleSubmit}>CREAR</button>
+          <button onClick={() => navigate("/clients")}>VOLVER</button>
         </div>
       )}
     </>

@@ -16,12 +16,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
-  background-color: aliceblue;
+  border: none;
+  background-color: rgb(94, 245, 184);
   height: 40px;
   width: 40px;
-  border-radius: 5px;
   cursor: pointer;
+  color: rgb(26, 26, 26);
+  font-weight: 200;
+}
+
+.deleteButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: rgb(254, 116, 98);
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-weight: 200;
 }
 
 .createButton {
@@ -38,18 +52,12 @@
   cursor: pointer;
 }
 
-/* .createButton:hover {
-}
-
-.createButton:active {
-} */
-
-.buttonEdit{
+.buttonEdit {
   height: 20px;
   width: 20px;
 }
 
-.buttonActive{
+.buttonActive {
   height: 30px;
   width: 30px;
 }
