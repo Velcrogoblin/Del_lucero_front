@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading/Loading";
-import styles from "./ProviderCreate.module.css";
+import styles from "./ProvCreate.module.css";
 import inputs from "../../styles/inputs.module.css";
 const VITE_URL_PROVIDERS = import.meta.env.VITE_URL_PROVIDERS;
 const VITE_URL_SUPPLIES = import.meta.env.VITE_URL_SUPPLIES;
