@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Loading } from "../Loading/Loading";
 import inputs from "../../styles/inputs.module.css";
 import buttons from "../../styles/buttons.module.css";
 import styles from "./orders.module.css";
-import { useNavigate } from "react-router-dom";
-import { Loading } from "../Loading/Loading";
 const VITE_URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
 const VITE_URL_CLIENTS = import.meta.env.VITE_URL_CLIENTS;
 const VITE_URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCTS;
 const VITE_URL_SUPPLIES = import.meta.env.VITE_URL_SUPPLIES;
 const VITE_URL_PURCHASES = import.meta.env.VITE_URL_PURCHASES;
-
 
 export const OrderCreate = () => {
   const navigate = useNavigate();
@@ -66,6 +65,8 @@ export const OrderCreate = () => {
   const handleAddProduct = (e) => {
     const selectedProductId = parseInt(e.target.value);
     const productAux = products.find((p) => p.product_id === selectedProductId);
+    let priceAux = 0;
+    productAux.Supplies.map((s) => s.name === "cera" ? priceAux += Math.round(s.cost * (productAux.weight / 1000)) : priceAux += s.cost);
     const existingProduct = order.products.find(
       (product) => product.product_id === selectedProductId
     );
@@ -73,11 +74,9 @@ export const OrderCreate = () => {
     if (existingProduct) {
       const updatedProducts = order.products.map((product) =>
         product.product_id === selectedProductId
-          ? { ...product, quantity: product.quantity + 1}
+          ? { ...product, quantity: product.quantity + 1 }
           : product
       );
-
-
 
       setOrder({
         ...order,
@@ -88,7 +87,11 @@ export const OrderCreate = () => {
         ...order,
         products: [
           ...order.products,
-          { product_id: selectedProductId, quantity: 1, price: (productAux.weight / 1000) * supplies[0].cost * productAux.earning_percentage },
+          {
+            product_id: selectedProductId,
+            quantity: 1,
+            price: priceAux * productAux.earning_percentage,
+          },
         ],
       });
     }
@@ -97,18 +100,23 @@ export const OrderCreate = () => {
   const handleSubmit = async (e) => {
     setLoading(true);
     try {
-
-      let response = await axios.post(VITE_URL_ORDERS, {
-        ...order,
-        token,
-      });
-      setLoading(false);
-      alert(response.data.message);
-      if(order.status === "Entregada" && (order.paid === true || order.paid === "true")) {
-        await axios.post(VITE_URL_PURCHASES, {
+      if (
+        order.status === "Entregado" &&
+        (order.paid === true || order.paid === "true")
+      ) {
+        let response = await axios.post(VITE_URL_PURCHASES, {
           ...order,
           token,
         });
+        setLoading(false);
+        alert(response.data.message);
+      } else {
+        let response = await axios.post(VITE_URL_ORDERS, {
+          ...order,
+          token,
+        });
+        setLoading(false);
+        alert(response.data.message);
       }
       navigate("/orders");
     } catch (error) {
@@ -120,7 +128,9 @@ export const OrderCreate = () => {
   useEffect(() => {
     axios.get(VITE_URL_PRODUCTS).then((res) => setProducts(res.data));
     axios.get(VITE_URL_CLIENTS).then((res) => setClients(res.data));
-    axios.get(VITE_URL_SUPPLIES).then((res) => setSupplies(res.data.filter((s) => s.name === "cera")));
+    axios
+      .get(VITE_URL_SUPPLIES)
+      .then((res) => setSupplies(res.data.filter((s) => s.name === "cera")));
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
 
@@ -129,10 +139,11 @@ export const OrderCreate = () => {
       {loading ? (
         <Loading />
       ) : (
-        <>
+        <div className={styles.containerEdit}>
+          <h2>CREAR NUEVO PEDIDO</h2>
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Cliente: </label>
+              <label className={inputs.inputGroupLabel}>Cliente:</label>
               <select
                 name={"client_id"}
                 onChange={handleChange}
@@ -148,7 +159,7 @@ export const OrderCreate = () => {
               </select>
             </div>
             <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Productos: </label>
+              <label className={inputs.inputGroupLabel}>Productos:</label>
               <select
                 onChange={(e) => handleAddProduct(e)}
                 className={inputs.inputGroupInput}
@@ -221,9 +232,9 @@ export const OrderCreate = () => {
                             </span>
                             <span
                               onClick={() => handleDeleteProduct(p.product_id)}
-                              className={buttons.substractButton}
+                              className={buttons.deleteButton}
                             >
-                              B
+                              X
                             </span>
                           </div>
                         </div>
@@ -257,31 +268,31 @@ export const OrderCreate = () => {
               </select>
             </div>
             <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Estado: </label>
+              <label className={inputs.inputGroupLabel}>Estado:</label>
               <select
                 onChange={handleChange}
                 name={"status"}
                 className={inputs.inputGroupInput}
               >
                 <option></option>
-                <option value={"En preparacion"}>En preparación</option>
-                <option value={"Cancelada"}>Cancelada</option>
-                <option value={"Lista para entregar"}>
-                  Lista para entregar
+                <option value={"En preparación"}>En preparación</option>
+                <option value={"Cancelado"}>Cancelado</option>
+                <option value={"Listo para entregar"}>
+                  Listo para entregar
                 </option>
-                <option value={"Entregada"}>Entregada</option>
+                <option value={"Entregado"}>Entregado</option>
               </select>
             </div>
             <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Descuento </label>
-                <input
-                  name="discount"
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
+              <label className={inputs.inputGroupLabel}>Descuento:</label>
+              <input
+                name="discount"
+                onChange={handleChange}
+                className={inputs.inputGroupInput}
+              />
+            </div>
             <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Pagado: </label>
+              <label className={inputs.inputGroupLabel}>Pagado:</label>
               <select
                 onChange={handleChange}
                 name={"paid"}
@@ -289,23 +300,13 @@ export const OrderCreate = () => {
               >
                 <option></option>
                 <option value={false}>No</option>
-                <option value={true}>Si</option>
+                <option value={true}>Sí</option>
               </select>
             </div>
-            <div
-              onClick={() => handleSubmit()}
-              className={buttons.createButton}
-            >
-              Crear Orden
-            </div>
-            <div
-              onClick={() => navigate("/orders")}
-              className={buttons.createButton}
-            >
-              Volver
-            </div>
           </form>
-        </>
+          <button onClick={() => handleSubmit()}>CREAR PEDIDO</button>
+          <button onClick={() => navigate("/orders")}>VOLVER</button>
+        </div>
       )}
     </>
   );

@@ -7,9 +7,31 @@
   overflow: auto;
 }
 
-.spacesMenu {
+/* .spacesMenu {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+} */
+
+.container {
+  display: grid;
+  grid-template-rows: repeat(2, 4fr);
+  grid-template-columns: repeat(2, 4fr);
+  grid-gap: 20px;
+  align-items: center;
+  width: 80%;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
 }

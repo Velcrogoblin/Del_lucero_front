@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import style from "./createclient.module.css";
-import buttons from "../../styles/buttons.module.css";
-import inputs from "../../styles/inputs.module.css";
 import { Loading } from "../Loading/Loading";
+import styles from "./ClientEdit.module.css";
+import inputs from "../../styles/inputs.module.css";
 const VITE_URL_CLIENTS = import.meta.env.VITE_URL_CLIENTS;
 
 export const ClientEdit = () => {
@@ -43,63 +42,53 @@ export const ClientEdit = () => {
   }, []);
 
   return (
-    <div className={style.searchClient}>
+    <div>
       {loading ? (
         <Loading />
       ) : (
-        <>
-          <h4 style={{ color: "white", textAlign: "center" }}>
-            {" "}
-            Editar Cliente
-          </h4>
+        <div className={styles.containerEdit}>
+          <h2>EDITAR CLIENTE</h2>
           {client && (
             <form>
-              <div className={inputs.inputGroup}>
-                <input
-                  type="text"
-                  name="name"
-                  value={client.name}
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
-                <label className={inputs.inputGroupLabel}>Nombre</label>
-              </div>
-              <div className={inputs.inputGroup}>
-                <input
-                  type="text"
-                  name="address"
-                  value={client.address}
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
-                <label className={inputs.inputGroupLabel}>Direccion</label>
-              </div>
-              <div className={inputs.inputGroup}>
-                <input
-                  type="text"
-                  name="phone"
-                  value={client.phone}
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
-                <label className={inputs.inputGroupLabel}>Telefono</label>
-              </div>
-              <div
-                className={buttons.createButton}
-                onClick={() => handleSubmit()}
-              >
-                Modificar
-              </div>
-              <div
-                type="button"
-                className={buttons.createButton}
-                onClick={() => navigate("/clients/")}
-              >
-                Volver
+              <div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Nombre:</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={client.name}
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Dirección:</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={client.address}
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Teléfono:</label>
+                  <input
+                    type="text"
+                    name="phone"
+                    value={client.phone}
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
             </form>
           )}
-        </>
+          <button onClick={() => handleSubmit()}>MODIFICAR</button>
+          <button type="button" onClick={() => navigate("/clients/")}>
+            VOLVER
+          </button>
+        </div>
       )}
     </div>
   );

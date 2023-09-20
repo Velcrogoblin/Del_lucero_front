@@ -1,10 +1,9 @@
 .selectedContainer {
   display: flex;
-  border: 1px solid black;
   height: 90px;
   width: 300px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.4);
+  border: none;
+  background-color: rgba(255, 255, 255, 0.941);
   margin: 5px;
 }
 
@@ -23,8 +22,9 @@
 .selectedName {
   text-align: center;
   margin-top: 10px;
-  font-size: 20px;
+  font-size: 18px;
   width: 220px;
+  color: rgb(34, 34, 34);
 }
 
 .selectedQuantity {
@@ -32,12 +32,37 @@
   align-items: center;
   justify-content: center;
   height: 40px;
-  border: 1px solid black;
+  border: none;
+  background-color: rgb(255, 255, 255);
   width: 40px;
+  color: rgb(34, 34, 34);
 }
 
 .selectedBottomRight {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.containerEdit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+.containerEdit h2 {
+  font-size: 18pt;
+  text-align: center;
+}
+
+.containerEdit button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 0;
+  background-color: rgb(94, 245, 184);
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
 }

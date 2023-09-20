@@ -5,24 +5,22 @@
 
 .inputGroupLabel {
   position: absolute;
-  top: -8px;
+  top: -3px;
   left: 0;
   translate: 10px 10px;
   color: rgb(131, 66, 131);
   transition: translate 500ms, scale 500ms;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .inputGroupInput {
   font: inherit;
   padding-top: 10px;
-  height: 70px;
+  height: 60px;
   width: 300px;
   border: none;
-  border-radius: 5px;
-  outline: 2px solid #fff;
   background-color: white;
-  font-size: 22px;
+  font-size: 20px;
   text-indent: 5px;
   transition: outline-color 500ms;
 }

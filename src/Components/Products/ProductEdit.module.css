@@ -1,4 +1,4 @@
-.containerCreate {
+.containerEdit {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,12 +6,12 @@
   margin: 2rem;
 }
 
-.containerCreate h2 {
+.containerEdit h2 {
   font-size: 18pt;
   text-align: center;
 }
 
-.containerCreate button {
+.containerEdit button {
   width: 100%;
   margin-bottom: 10px;
   padding: 10px 0;

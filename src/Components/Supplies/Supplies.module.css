@@ -1,4 +1,4 @@
-.containerCatalogue {
+.containerSupplies {
   display: flex;
   align-items: center;
   align-content: center;
@@ -6,42 +6,26 @@
   margin: 2rem;
 }
 
-.containerCatalogue button {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px 0;
-  background-color: rgb(94, 245, 184);
-  border: none;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12pt;
-}
-
-.gridProducts {
+.gridSupplies {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  gap: 1rem;
   border: none;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .cards {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  justify-items: center;
+  align-items: center;
   border: none;
+  background-color: rgba(0, 0, 0, 0.129);
   width: 100px;
-}
-
-.cards img {
   height: 100px;
-  width: 100px;
-  margin: 0;
-  padding: 0;
-  border: none;
 }
 
-.cards span {
+.cards p {
   display: flex;
   margin: 5px auto;
   justify-content: center;
@@ -49,4 +33,14 @@
   font-size: small;
   margin-top: 10px;
   text-align: center;
+}
+
+.containerSupplies button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 0;
+  background-color: rgb(94, 245, 184);
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
 }

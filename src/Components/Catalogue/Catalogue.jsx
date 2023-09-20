@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./Catalogue.module.css";
-import { useNavigate } from "react-router-dom";
-import buttons from "../../styles/buttons.module.css";
 const VITE_URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCTS;
 
 export const Catalogue = () => {
@@ -16,12 +15,6 @@ export const Catalogue = () => {
 
   return (
     <div className={styles.containerCatalogue}>
-      <div
-        className={buttons.buttonMenu}
-        onClick={() => navigate("/products/create")}
-      >
-        Crear producto
-      </div>
       <div className={styles.gridProducts}>
         {products &&
           products?.map((p) => {
@@ -31,19 +24,14 @@ export const Catalogue = () => {
                 className={styles.cards}
                 onClick={() => navigate(`/detail/${p.product_id}`)}
               >
-                <img
-                  className={styles.imageProduct}
-                  src={p?.img}
-                  alt={p.name}
-                />
-                <span className={styles.cardName}>{p?.name}</span>
+                <img src={p?.img} alt={p.name} />
+                <span>{p?.name.toUpperCase()}</span>
               </div>
             );
           })}
       </div>
-      <div onClick={() => navigate("/")} className={buttons.createButton}>
-        Volver
-      </div>
+      <button onClick={() => navigate("/products/create")}>+</button>
+      <button onClick={() => navigate("/")}>VOLVER</button>
     </div>
   );
 };
