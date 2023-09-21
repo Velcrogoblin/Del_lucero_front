@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading/Loading";
+import { Login } from "../Login/Login";
 import inputs from "../../styles/inputs.module.css";
 import styles from "./ProductCreate.module.css";
 const VITE_URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCTS;
@@ -21,7 +22,7 @@ export const ProductCreate = () => {
     duration: 0,
     product_supplies: [],
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -45,156 +46,160 @@ export const ProductCreate = () => {
 
   const handleSubmit = async (e) => {
     setLoading(true);
-    if (token.length < 150) {
-      alert("Tenes que estar logueado para crear un producto");
-    } else {
-      try {
-        const response = await axios.post(VITE_URL_PRODUCTS, {
-          ...product,
-          token: token,
-        });
+    try {
+      const response = await axios.post(VITE_URL_PRODUCTS, {
+        ...product,
+        token,
+      });
 
-        setLoading(false);
-        alert(response.data.message);
+      setLoading(false);
+      alert(response.data.message);
 
-        navigate("/catalogue");
-      } catch (error) {
-        setLoading(false);
-        alert(error.response.data.message);
-      }
+      navigate("/catalogue");
+    } catch (error) {
+      setLoading(false);
+      alert(error.response.data.message);
     }
   };
 
   useEffect(() => {
     setToken(JSON.parse(window.localStorage.getItem("token")));
-    axios.get(VITE_URL_SUPPLIES).then((res) => setSupplies(res.data));
+    axios
+      .get(VITE_URL_SUPPLIES)
+      .then((res) => setSupplies(res.data))
+      .then(() => setLoading(false));
   }, []);
 
-  return (
-    <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className={styles.containerCreate}>
-          <h2>CREAR NUEVO PRODUCTO</h2>
-          <form>
-            <div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Nombre:</label>
-                <input
-                  name="name"
-                  value={product.name}
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Ancho:</label>
-                <input
-                  name="width"
-                  value={product.width}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Alto:</label>
-                <input
-                  name="height"
-                  value={product.height}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Peso:</label>
-                <input
-                  name="weight"
-                  value={product.weight}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>
-                  Múltiplo de ganancia:
-                </label>
-                <input
-                  name="earning_percentage"
-                  value={product.earning_percentage}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Insumos:</label>
-                <select
-                  className={inputs.inputGroupInput}
-                  onChange={handleAddSupply}
-                >
-                  <option></option>
-                  {supplies &&
-                    supplies?.map((s) => {
-                      const supplyAlreadyAdded = product.product_supplies.some(
-                        (supply) => s.name === supply
-                      );
-                      if (!supplyAlreadyAdded) {
-                        return (
-                          <option key={s.name} value={s.name}>
-                            {s.name}
-                          </option>
-                        );
-                      }
-                    })}
-                </select>
-              </div>
-              {product?.product_supplies.length > 0 && (
-                <div>
-                  {product?.product_supplies?.map((s) => {
-                    return (
-                      <button
-                        key={s}
-                        type="button"
-                        value={s}
-                        style={{
-                          color: "white",
-                          backgroundColor: "rgb(254, 116, 98)",
-                        }}
-                        onClick={handleRemoveSupply}
-                      >
-                        {s}
-                      </button>
-                    );
-                  })}
+  if (token === null || token?.length < 150) {
+    return <Login />;
+  } else {
+    return (
+      <>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className={styles.containerCreate}>
+            <h2>CREAR NUEVO PRODUCTO</h2>
+            <form>
+              <div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Nombre:</label>
+                  <input
+                    name="name"
+                    value={product.name}
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
                 </div>
-              )}
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Imagen:</label>
-                <input
-                  name="img"
-                  value={product.img}
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Ancho:</label>
+                  <input
+                    name="width"
+                    value={product.width}
+                    onChange={handleChange}
+                    className={inputs.inputGroupInput}
+                  />
+                </div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Alto:</label>
+                  <input
+                    name="height"
+                    value={product.height}
+                    onChange={handleChange}
+                    className={inputs.inputGroupInput}
+                  />
+                </div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Peso:</label>
+                  <input
+                    name="weight"
+                    value={product.weight}
+                    onChange={handleChange}
+                    className={inputs.inputGroupInput}
+                  />
+                </div>
+
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>
+                    Múltiplo de ganancia:
+                  </label>
+                  <input
+                    name="earning_percentage"
+                    value={product.earning_percentage}
+                    onChange={handleChange}
+                    className={inputs.inputGroupInput}
+                  />
+                </div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Insumos:</label>
+                  <select
+                    className={inputs.inputGroupInput}
+                    onChange={handleAddSupply}
+                  >
+                    <option></option>
+                    {supplies &&
+                      supplies?.map((s) => {
+                        const supplyAlreadyAdded =
+                          product.product_supplies.some(
+                            (supply) => s.name === supply
+                          );
+                        if (!supplyAlreadyAdded) {
+                          return (
+                            <option key={s.name} value={s.name}>
+                              {s.name}
+                            </option>
+                          );
+                        }
+                      })}
+                  </select>
+                </div>
+                {product?.product_supplies.length > 0 && (
+                  <div>
+                    {product?.product_supplies?.map((s) => {
+                      return (
+                        <button
+                          key={s}
+                          type="button"
+                          value={s}
+                          style={{
+                            color: "white",
+                            backgroundColor: "rgb(254, 116, 98)",
+                          }}
+                          onClick={handleRemoveSupply}
+                        >
+                          {s}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Imagen:</label>
+                  <input
+                    name="img"
+                    value={product.img}
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Duración:</label>
+                  <input
+                    name="duration"
+                    value={product.duration}
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Duración:</label>
-                <input
-                  name="duration"
-                  value={product.duration}
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </form>
-          <button onClick={() => handleSubmit()}>CREAR</button>
-          <button type="button" onClick={() => navigate("/catalogue")}>
-            VOLVER
-          </button>
-        </div>
-      )}
-    </>
-  );
+            </form>
+            <button onClick={() => handleSubmit()}>CREAR</button>
+            <button type="button" onClick={() => navigate("/catalogue")}>
+              VOLVER
+            </button>
+          </div>
+        )}
+      </>
+    );
+  }
 };

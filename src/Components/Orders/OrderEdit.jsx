@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading/Loading";
+import { Login } from "../Login/Login";
 import inputs from "../../styles/inputs.module.css";
 import styles from "./orders.module.css";
 import buttons from "../../styles/buttons.module.css";
@@ -58,7 +59,11 @@ export const OrderEdit = () => {
     const selectedProductId = parseInt(e.target.value);
     const productAux = products.find((p) => p.product_id === selectedProductId);
     let priceAux = 0;
-    productAux.Supplies.map((s) => s.name === "cera" ? priceAux += Math.round(s.cost * (productAux.weight / 1000)) : priceAux += s.cost);
+    productAux.Supplies.map((s) =>
+      s.name === "cera"
+        ? (priceAux += Math.round(s.cost * (productAux.weight / 1000)))
+        : (priceAux += s.cost)
+    );
     const existingProduct = order.products.find(
       (product) => product.product_id === selectedProductId
     );
@@ -132,201 +137,205 @@ export const OrderEdit = () => {
       setOrder(formattedOrder);
     });
 
-    axios
-      .get(VITE_URL_PRODUCTS)
-      .then((res) => setProducts(res.data))
-      .then(() => setLoading(false));
+    axios.get(VITE_URL_PRODUCTS).then((res) => setProducts(res.data));
 
     axios
       .get(VITE_URL_SUPPLIES)
-      .then((res) => setSupplies(res.data.filter((s) => s.name === "cera")));
+      .then((res) => setSupplies(res.data.filter((s) => s.name === "cera")))
+      .then(() => setLoading(false));
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
 
-  return (
-    <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className={styles.containerEdit}>
-          <h2>EDITAR PRODUCTO</h2>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Cliente:</label>
-              {order?.Client && (
-                <input
-                  value={order.Client.name}
-                  readOnly
+  if (token === null || token?.length < 150) {
+    return <Login />;
+  } else {
+    return (
+      <>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className={styles.containerEdit}>
+            <h2>EDITAR PRODUCTO</h2>
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>Cliente:</label>
+                {order?.Client && (
+                  <input
+                    value={order.Client.name}
+                    readOnly
+                    className={inputs.inputGroupInput}
+                  />
+                )}
+              </div>
+              <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>Productos:</label>
+                <select
+                  onChange={(e) => handleAddProduct(e)}
                   className={inputs.inputGroupInput}
-                />
-              )}
-            </div>
-            <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Productos:</label>
-              <select
-                onChange={(e) => handleAddProduct(e)}
-                className={inputs.inputGroupInput}
-              >
-                <option>Seleccione uno o mas productos</option>
-                {products &&
-                  products?.map((p) => {
-                    let productAlreadyAdded;
-                    if (order?.products) {
-                      productAlreadyAdded = order.products?.some(
-                        (product) => product.product_id === p.product_id
-                      );
-                    }
-                    if (!productAlreadyAdded) {
-                      return (
-                        <option value={p.product_id} key={p.product_id}>
-                          {p.name}
-                        </option>
-                      );
-                    }
-                  })}
-              </select>
-            </div>
-            {order?.products && (
-              <div>
+                >
+                  <option>Seleccione uno o mas productos</option>
+                  {products &&
+                    products?.map((p) => {
+                      let productAlreadyAdded;
+                      if (order?.products) {
+                        productAlreadyAdded = order.products?.some(
+                          (product) => product.product_id === p.product_id
+                        );
+                      }
+                      if (!productAlreadyAdded) {
+                        return (
+                          <option value={p.product_id} key={p.product_id}>
+                            {p.name}
+                          </option>
+                        );
+                      }
+                    })}
+                </select>
+              </div>
+              {order?.products && (
                 <div>
-                  {order.products &&
-                    order.products.map((p) => {
-                      const selectedProduct = products.find(
-                        (product) =>
-                          parseInt(product.product_id) ===
-                          parseInt(p.product_id)
-                      );
-                      return (
-                        <div
-                          key={p.product_id}
-                          className={styles.selectedContainer}
-                        >
-                          <div>
-                            {selectedProduct && (
-                              <img
-                                src={selectedProduct.img}
-                                alt={selectedProduct.name}
-                                className={styles.selectedImg}
-                              />
-                            )}
-                          </div>
+                  <div>
+                    {order.products &&
+                      order.products.map((p) => {
+                        const selectedProduct = products.find(
+                          (product) =>
+                            parseInt(product.product_id) ===
+                            parseInt(p.product_id)
+                        );
+                        return (
+                          <div
+                            key={p.product_id}
+                            className={styles.selectedContainer}
+                          >
+                            <div>
+                              {selectedProduct && (
+                                <img
+                                  src={selectedProduct.img}
+                                  alt={selectedProduct.name}
+                                  className={styles.selectedImg}
+                                />
+                              )}
+                            </div>
 
-                          <div className={styles.selectedRight}>
-                            <span className={styles.selectedName}>
-                              {selectedProduct.name}
-                            </span>
-                            <div className={styles.selectedBottomRight}>
-                              <span
-                                onClick={() =>
-                                  handleUpdateProductQuantity(
-                                    p.product_id,
-                                    "subtract"
-                                  )
-                                }
-                                className={buttons.substractButton}
-                              >
-                                -
+                            <div className={styles.selectedRight}>
+                              <span className={styles.selectedName}>
+                                {selectedProduct.name}
                               </span>
-                              <p className={styles.selectedQuantity}>
-                                {p.quantity}
-                              </p>
-                              <span
-                                onClick={() =>
-                                  handleUpdateProductQuantity(
-                                    p.product_id,
-                                    "add"
-                                  )
-                                }
-                                className={buttons.substractButton}
-                              >
-                                +
-                              </span>
-                              <span
-                                onClick={() =>
-                                  handleDeleteProduct(p.product_id)
-                                }
-                                className={buttons.deleteButton}
-                              >
-                                X
-                              </span>
+                              <div className={styles.selectedBottomRight}>
+                                <span
+                                  onClick={() =>
+                                    handleUpdateProductQuantity(
+                                      p.product_id,
+                                      "subtract"
+                                    )
+                                  }
+                                  className={buttons.substractButton}
+                                >
+                                  -
+                                </span>
+                                <p className={styles.selectedQuantity}>
+                                  {p.quantity}
+                                </p>
+                                <span
+                                  onClick={() =>
+                                    handleUpdateProductQuantity(
+                                      p.product_id,
+                                      "add"
+                                    )
+                                  }
+                                  className={buttons.substractButton}
+                                >
+                                  +
+                                </span>
+                                <span
+                                  onClick={() =>
+                                    handleDeleteProduct(p.product_id)
+                                  }
+                                  className={buttons.deleteButton}
+                                >
+                                  X
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>
-                Fecha de entrega:{" "}
-              </label>
-              <input
-                type="date"
-                name={"delivery_date"}
-                onChange={handleChange}
-                value={order?.delivery_date}
-                className={inputs.inputGroupInput}
-              />
-            </div>
-            <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Tipo de entrega:</label>
-              <select
-                onChange={handleChange}
-                name={"delivery_method"}
-                value={order?.delivery_method}
-                className={inputs.inputGroupInput}
-              >
-                <option></option>
-                <option value={"Retiro"}>Retiro</option>
-                <option value={"A domicilio"}>A domicilio</option>
-              </select>
-            </div>
-            <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Estado:</label>
-              <select
-                onChange={handleChange}
-                name={"status"}
-                value={order?.status}
-                className={inputs.inputGroupInput}
-              >
-                <option></option>
-                <option value={"Cancelado"}>Cancelado</option>
-                <option value={"En preparación"}>En preparación</option>
-                <option value={"Listo para entregar"}>
-                  Listo para entregar
-                </option>
-                <option value={"Entregado"}>Entregado</option>
-              </select>
-            </div>
-            <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Descuento:</label>
-              <input
-                name="discount"
-                value={order?.discount}
-                onChange={handleChange}
-                className={inputs.inputGroupInput}
-              />
-            </div>
-            <div className={inputs.inputGroup}>
-              <label className={inputs.inputGroupLabel}>Pagado:</label>
-              <select
-                onChange={handleChange}
-                name={"paid"}
-                value={order?.paid}
-                className={inputs.inputGroupInput}
-              >
-                <option></option>
-                <option value={false}>No</option>
-                <option value={true}>Sí</option>
-              </select>
-            </div>
-          </form>
-          <button onClick={() => handleSubmit()}>MODIFICAR</button>
-          <button onClick={() => navigate("/orders")}>VOLVER</button>
-        </div>
-      )}
-    </>
-  );
+              <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>
+                  Fecha de entrega:{" "}
+                </label>
+                <input
+                  type="date"
+                  name={"delivery_date"}
+                  onChange={handleChange}
+                  value={order?.delivery_date}
+                  className={inputs.inputGroupInput}
+                />
+              </div>
+              <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>
+                  Tipo de entrega:
+                </label>
+                <select
+                  onChange={handleChange}
+                  name={"delivery_method"}
+                  value={order?.delivery_method}
+                  className={inputs.inputGroupInput}
+                >
+                  <option></option>
+                  <option value={"Retiro"}>Retiro</option>
+                  <option value={"A domicilio"}>A domicilio</option>
+                </select>
+              </div>
+              <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>Estado:</label>
+                <select
+                  onChange={handleChange}
+                  name={"status"}
+                  value={order?.status}
+                  className={inputs.inputGroupInput}
+                >
+                  <option></option>
+                  <option value={"Cancelado"}>Cancelado</option>
+                  <option value={"En preparación"}>En preparación</option>
+                  <option value={"Listo para entregar"}>
+                    Listo para entregar
+                  </option>
+                  <option value={"Entregado"}>Entregado</option>
+                </select>
+              </div>
+              <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>Descuento:</label>
+                <input
+                  name="discount"
+                  value={order?.discount}
+                  onChange={handleChange}
+                  className={inputs.inputGroupInput}
+                />
+              </div>
+              <div className={inputs.inputGroup}>
+                <label className={inputs.inputGroupLabel}>Pagado:</label>
+                <select
+                  onChange={handleChange}
+                  name={"paid"}
+                  value={order?.paid}
+                  className={inputs.inputGroupInput}
+                >
+                  <option></option>
+                  <option value={false}>No</option>
+                  <option value={true}>Sí</option>
+                </select>
+              </div>
+            </form>
+            <button onClick={() => handleSubmit()}>MODIFICAR</button>
+            <button onClick={() => navigate("/orders")}>VOLVER</button>
+          </div>
+        )}
+      </>
+    );
+  }
 };

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading/Loading";
+import { Login } from "../Login/Login";
 import inputs from "../../styles/inputs.module.css";
 import styles from "./SupplyEdit.module.css";
 const VITE_URL_SUPPLIES = import.meta.env.VITE_URL_SUPPLIES;
@@ -20,21 +21,17 @@ export const SupplyEdit = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    if (token.length < 150) {
-      alert("Debes estar logueado para editar proveedores");
-    } else {
-      try {
-        await axios.put(VITE_URL_SUPPLIES, {
-          ...supply,
-          token,
-        });
-        setLoading(false);
-        alert("insumo editado");
-        navigate("/supplies");
-      } catch (error) {
-        setLoading(false);
-        alert("ocurrio un error");
-      }
+    try {
+      await axios.put(VITE_URL_SUPPLIES, {
+        ...supply,
+        token,
+      });
+      setLoading(false);
+      alert("insumo editado");
+      navigate("/supplies");
+    } catch (error) {
+      setLoading(false);
+      alert("ocurrio un error");
     }
   };
 
@@ -46,41 +43,45 @@ export const SupplyEdit = () => {
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
 
-  return (
-    <div>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className={styles.containerEdit}>
-          <h2>EDITAR INSUMO</h2>
+  if (token === null || token?.length < 150) {
+    return <Login />;
+  } else {
+    return (
+      <div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className={styles.containerEdit}>
+            <h2>EDITAR INSUMO</h2>
 
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Nombre:</label>
-                <input
-                  value={supply.name}
-                  name="name"
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
-              </div>
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Nombre:</label>
+                  <input
+                    value={supply.name}
+                    name="name"
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
+                </div>
 
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Costo:</label>
-                <input
-                  value={supply.cost}
-                  name="cost"
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Costo:</label>
+                  <input
+                    value={supply.cost}
+                    name="cost"
+                    onChange={handleChange}
+                    className={inputs.inputGroupInput}
+                  />
+                </div>
               </div>
-            </div>
-          </form>
-          <button onClick={() => handleSubmit()}>MODIFICAR</button>
-          <button onClick={() => navigate("/supplies")}>VOLVER</button>
-        </div>
-      )}
-    </div>
-  );
+            </form>
+            <button onClick={() => handleSubmit()}>MODIFICAR</button>
+            <button onClick={() => navigate("/supplies")}>VOLVER</button>
+          </div>
+        )}
+      </div>
+    );
+  }
 };
