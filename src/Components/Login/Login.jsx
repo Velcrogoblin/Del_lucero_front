@@ -3,7 +3,7 @@ import axios from "axios";
 import inputs from "../../styles/inputs.module.css";
 import buttons from "../../styles/buttons.module.css";
 import containers from "../../styles/containers.module.css";
-import style from "./Login.module.css";
+import styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../Loading/Loading";
 import { Link } from "react-router-dom";
@@ -16,6 +16,7 @@ export const Login = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [toke, setToken] = useState();
 
   const handleChange = (e) => {
     setUser({
@@ -33,12 +34,11 @@ export const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(`${VITE_URL_AUTH}login`, user);
-      setLoading(false);
       alert("Ingreso exitoso");
-      handleReset();
       window.localStorage.setItem("token", JSON.stringify(response.data.token));
       setToken(response.data.token);
-      navigate("/");
+      location.reload();
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       alert(error.message);
@@ -46,14 +46,16 @@ export const Login = () => {
   };
 
   return (
-    <div className={containers.mainContainer}>
+    <div>
       {loading ? (
         <Loading />
       ) : (
-        <form>
-          <div className={inputs.inputGroup}>
+        <div className={styles.containerCreate}>
+          <h2>INICIAR SESIÓN</h2>
+            <form>
+              <div className={inputs.inputGroup}>
             <label htmlFor="username" className={inputs.inputGroupLabel}>
-              Nombre de usuario
+              Nombre de usuario:
             </label>
             <input
               name="username"
@@ -65,7 +67,7 @@ export const Login = () => {
           </div>
           <div className={inputs.inputGroup}>
             <label htmlFor="password" className={inputs.inputGroupLabel}>
-              Contraseña
+              Contraseña:
             </label>
             <input
               name="password"
@@ -76,19 +78,9 @@ export const Login = () => {
               required
             />
           </div>
-          <div className={style.inLine}>
-            ¿No tienes cuenta? <Link to="/register"> Registrate</Link>
-          </div>
-          <div onClick={() => handleSubmit()} className={buttons.createButton}>
-            Ingresar
-          </div>
-          <div onClick={handleReset} className={buttons.createButton}>
-            Limpiar campos
-          </div>
-          <div onClick={() => navigate("/")} className={buttons.createButton}>
-            Volver
-          </div>
         </form>
+        <button onClick={() => handleSubmit()}>INGRESAR</button>
+          </div>
       )}
     </div>
   );

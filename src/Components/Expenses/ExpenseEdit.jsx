@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Loading } from "../Loading/Loading";
+import { Login } from "../Login/Login";
 import inputs from "../../styles/inputs.module.css";
 import styles from "./ExpenseEdit.module.css";
 const VITE_URL_EXPENSES = import.meta.env.VITE_URL_EXPENSES;
@@ -20,9 +21,6 @@ export const ExpenseEdit = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    if (token.length < 150) {
-      alert("Debes estar logueado para editar proveedores");
-    } else {
       try {
         await axios.put(VITE_URL_EXPENSES, {
           ...expense,
@@ -35,7 +33,6 @@ export const ExpenseEdit = () => {
         setLoading(false);
         alert("ocurrio un error");
       }
-    }
   };
 
   useEffect(() => {
@@ -55,53 +52,59 @@ export const ExpenseEdit = () => {
     setToken(JSON.parse(window.localStorage.getItem("token")));
   }, []);
 
-  return (
-    <div>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className={styles.containerEdit}>
-          <h2 style={{ color: "white", textAlign: "center" }}>EDITAR GASTO</h2>
+  if (token === null || token?.length < 150) {
+    return <Login />;
+  } else {
+    return (
+      <div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className={styles.containerEdit}>
+            <h2 style={{ color: "white", textAlign: "center" }}>
+              EDITAR GASTO
+            </h2>
 
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <div>
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Nombre:</label>
-                <input
-                  value={expense.name}
-                  name="name"
-                  className={inputs.inputGroupInput}
-                  onChange={handleChange}
-                />
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <div>
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Nombre:</label>
+                  <input
+                    value={expense.name}
+                    name="name"
+                    className={inputs.inputGroupInput}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Fecha:</label>
+                  <input
+                    type="date"
+                    value={expense.date}
+                    name={"date"}
+                    onChange={handleChange}
+                    className={inputs.inputGroupInput}
+                  />
+                </div>
+
+                <div className={inputs.inputGroup}>
+                  <label className={inputs.inputGroupLabel}>Costo:</label>
+                  <input
+                    value={expense.amount}
+                    name="amount"
+                    onChange={handleChange}
+                    className={inputs.inputGroupInput}
+                  />
+                </div>
               </div>
+            </form>
 
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Fecha:</label>
-                <input
-                  type="date"
-                  value={expense.date}
-                  name={"date"}
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-
-              <div className={inputs.inputGroup}>
-                <label className={inputs.inputGroupLabel}>Costo:</label>
-                <input
-                  value={expense.amount}
-                  name="amount"
-                  onChange={handleChange}
-                  className={inputs.inputGroupInput}
-                />
-              </div>
-            </div>
-          </form>
-
-          <button onClick={() => handleSubmit()}>MODIFICAR</button>
-          <button onClick={() => navigate("/expenses")}>VOLVER</button>
-        </div>
-      )}
-    </div>
-  );
+            <button onClick={() => handleSubmit()}>MODIFICAR</button>
+            <button onClick={() => navigate("/expenses")}>VOLVER</button>
+          </div>
+        )}
+      </div>
+    );
+  }
 };

@@ -1,3 +1,26 @@
 .inLine {
   color: white;
 }
+
+.containerCreate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+.containerCreate h2 {
+  font-size: 18pt;
+  text-align: center;
+}
+
+.containerCreate button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 0;
+  background-color: rgb(94, 245, 184);
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+}
