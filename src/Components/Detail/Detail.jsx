@@ -60,7 +60,7 @@ export const Detail = () => {
                 <span>ANCHO: {detail.width} cm</span>
                 <span>ALTO: {detail.height} cm</span>
                 <span>PESO: {detail.weight} gr</span>
-                <span>DURACIÓN: {detail.duration} min</span>
+                <span>DURACIÓN: {detail.duration} hs</span>
                 <button onClick={() => navigate(`/products/edit/${id}`)}>
                   EDITAR
                 </button>
